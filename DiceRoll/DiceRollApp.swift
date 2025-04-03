@@ -13,5 +13,6 @@ struct DiceRollApp: App {
         WindowGroup {
             ContentView()
         }
+        .modelContainer(for: Dice.self)
     }
 }

@@ -6,17 +6,30 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
+    @Environment(\.modelContext) var modelContext
+    // dice list loaded from modelContext
+    @Query(sort: \Dice.id) var die: [Dice]
+    // storage path?
+//    @State private var path = [Dice]()
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        
+        TabView {
+            RollView()
+                .tabItem {
+                    Label("One", systemImage: "star")
+                }
+            
+            Text("Tab 2")
+                .tabItem {
+                    Label("Two", systemImage: "circle")
+                }
         }
-        .padding()
-    }
+        
+    } // body
 }
 
 #Preview {
