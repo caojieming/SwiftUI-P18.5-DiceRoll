@@ -20,8 +20,8 @@ class Dice {
     init(id: UUID = UUID(), type: Int) {
         self.id = id
         self.type = type
-//        self.value = Int.random(in: 1..<(type + 1))
-        self.value = 0
+        self.value = Int.random(in: 1..<(type + 1))
+//        self.value = 0
     }
     
     func roll() {

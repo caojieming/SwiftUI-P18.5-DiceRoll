@@ -10,22 +10,20 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) var modelContext
-    // dice list loaded from modelContext
-    @Query(sort: \Dice.id) var die: [Dice]
-    // storage path?
-//    @State private var path = [Dice]()
+    // dice list loaded/queried from modelContext
+//    @Query var die: [Dice]
     
     var body: some View {
         
         TabView {
             RollView()
                 .tabItem {
-                    Label("One", systemImage: "star")
+                    Label("Dice Roll", systemImage: "cube")
                 }
             
-            Text("Tab 2")
+            HistoryView()
                 .tabItem {
-                    Label("Two", systemImage: "circle")
+                    Label("History", systemImage: "line.horizontal.3")
                 }
         }
         
@@ -33,5 +31,9 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: Dice.self, configurations: config)
+    
+    return ContentView()
+        .modelContainer(container)
 }
