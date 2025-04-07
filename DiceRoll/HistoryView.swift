@@ -28,6 +28,11 @@ struct HistoryView: View {
                 .onDelete(perform: deleteDiceHist)
             }
             .navigationTitle("Roll History")
+            .toolbar {
+//                Button("Clear all") {
+//                    clearHist()
+//                }
+            }
             
         } // NavigationStack
         
@@ -44,13 +49,22 @@ struct HistoryView: View {
         }
     }
     
+    // clear all items
+    func clearHist() {
+        do {
+            try modelContext.delete(model: Dice.self)
+        } catch {
+            print("Failed to clear all dice data.")
+        }
+    }
+    
 }
 
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: Dice.self, configurations: config)
     
-    for i in 1..<10 {
+    for _ in 1...10 {
         let dice = Dice(type: 10)
         dice.roll()
         container.mainContext.insert(dice)

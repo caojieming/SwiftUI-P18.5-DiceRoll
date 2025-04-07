@@ -13,9 +13,13 @@ struct RollView: View {
     // dice list loaded/queried from modelContext
 //    @Query var die: [Dice]
     
-    let types = [4, 6, 8, 10, 12, 20, 100]
+    let diceTypeOptions = [4, 6, 8, 10, 12, 20, 100]
     @State private var diceType = 6
-    @State private var curDiceVal = 0
+    
+    let numDieOptions = [1, 2, 3, 4, 5, 6]
+    @State private var numDie = 1
+    
+    @State private var curDieVals = [0]
     
     var body: some View {
         NavigationStack {
@@ -23,7 +27,7 @@ struct RollView: View {
             VStack {
                 Text("Pick how many sides you want the dice to have:")
                 Picker("Dice Type", selection: $diceType) {
-                    ForEach(types, id: \.self) {
+                    ForEach(diceTypeOptions, id: \.self) {
                         Text(String($0))
                     }
                 }
@@ -32,20 +36,51 @@ struct RollView: View {
                 .padding(.trailing)
                 .padding(.bottom)
                 
+                Text("Pick how many die you want to roll:")
+                Picker("Number of Die", selection: $numDie) {
+                    ForEach(numDieOptions, id: \.self) {
+                        Text(String($0))
+                    }
+                }
+                .pickerStyle(.segmented)
+                .padding(.leading)
+                .padding(.trailing)
+                .padding(.bottom)
+                
+                // roll button
                 Button("Roll") {
-                    let newDiceRoll = Dice(type: diceType)
-                    curDiceVal = newDiceRoll.value
-//                    print("roll type, val: \(newDiceRoll.type), \(newDiceRoll.value)")
-                    modelContext.insert(newDiceRoll)
-//                    print("die: \(die)")
+                    // clears out curDieVals
+                    curDieVals.removeAll()
+                    
+                    // generate die vals
+                    for _ in 1...numDie {
+                        let newDiceRoll = Dice(type: diceType)
+                        curDieVals.append(newDiceRoll.value)
+                        modelContext.insert(newDiceRoll)
+                    }
                 }
                 .padding()
                 .font(.title)
                 
-                Text("\(curDiceVal)")
+                // rolled die results
+                ScrollView {
+                    LazyHStack {
+                        ForEach(Array(curDieVals.enumerated()), id: \.offset) { index, item in
+                            Text("\(item)")
+                        }
+                        .listStyle(.plain)
+                        .padding()
+                        .font(.title2)
+                    }
+                }
+                
+                // rolled die results total sum
+                Text("Total sum: \(curDieVals.reduce(0, +))")
                     .padding()
-                    .font(.title)
-
+                    .font(.title2)
+                
+                Spacer()
+                
             }
             .navigationTitle("Dice Roll")
             
