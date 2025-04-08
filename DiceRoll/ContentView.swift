@@ -10,9 +10,6 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) var modelContext
-    // dice list loaded/queried from modelContext
-//    @Query var die: [Dice]
-    
     var body: some View {
         
         TabView {
@@ -26,7 +23,6 @@ struct ContentView: View {
                     Label("History", systemImage: "line.horizontal.3")
                 }
         }
-        
     } // body
 }
 

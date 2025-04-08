@@ -52,7 +52,7 @@ struct RollView: View {
                     // clears out curDieVals
                     curDieVals.removeAll()
                     
-                    // generate die vals
+                    // generate a total of "numDie" vals
                     for _ in 1...numDie {
                         let newDiceRoll = Dice(type: diceType)
                         curDieVals.append(newDiceRoll.value)
@@ -61,6 +61,7 @@ struct RollView: View {
                 }
                 .padding()
                 .font(.title)
+                .sensoryFeedback(.increase, trigger: curDieVals)
                 
                 // rolled die results
                 ScrollView {
@@ -80,14 +81,10 @@ struct RollView: View {
                     .font(.title2)
                 
                 Spacer()
-                
             }
             .navigationTitle("Dice Roll")
-            
         } // NavigationStack
-        
     } // body
-    
 }
 
 #Preview {

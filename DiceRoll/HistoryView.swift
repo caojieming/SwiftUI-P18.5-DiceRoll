@@ -10,8 +10,7 @@ import SwiftData
 
 struct HistoryView: View {
     @Environment(\.modelContext) var modelContext
-    // dice list loaded/queried from modelContext
-//    @Query(sort: \Dice.id) var die: [Dice]
+    // dice list loaded/queried from modelContext, sorted by type then value
     @Query(sort: [SortDescriptor(\Dice.type), SortDescriptor(\Dice.value)]) var die: [Dice]
     
     var body: some View {
@@ -28,14 +27,13 @@ struct HistoryView: View {
                 .onDelete(perform: deleteDiceHist)
             }
             .navigationTitle("Roll History")
-            .toolbar {
+//            .toolbar {
 //                Button("Clear all") {
 //                    clearHist()
 //                }
-            }
+//            }
             
         } // NavigationStack
-        
     } // body
     
     // for deleting an item from modelContext
@@ -49,14 +47,14 @@ struct HistoryView: View {
         }
     }
     
-    // clear all items
-    func clearHist() {
-        do {
-            try modelContext.delete(model: Dice.self)
-        } catch {
-            print("Failed to clear all dice data.")
-        }
-    }
+    // clear all items (nonfunctional)
+//    func clearHist() {
+//        do {
+//            try modelContext.delete(model: Dice.self)
+//        } catch {
+//            print("Failed to clear all dice data.")
+//        }
+//    }
     
 }
 
